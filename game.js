@@ -4,9 +4,15 @@ let upgradesUnlocked = false
 let clicksPerSecond = 0
 let autoUpgradeLevel = 0
 
+const clickSound = new Howl({
+  src: ['https://neal.fun/stimulation-clicker/sounds/button-click.mp3']
+})
+
 function clickBell() {
   counter.classList.remove('hidden')
   count += clicksPerClick
+
+  clickSound.play()
 
   if (count > 10 && !upgradesUnlocked) {
     upgradesUnlocked = true
