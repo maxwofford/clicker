@@ -55,7 +55,11 @@ function startAutoClicker(duration) {
 }
 
 function render() {
-  counter.innerHTML = count + " " + pluralize(count, "click")
+  counter.innerHTML = formatNumber(count) + " " + pluralize(count, "click")
+}
+
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
 function pluralize(count, word) {
