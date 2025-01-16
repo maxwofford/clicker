@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      @keyframes popcorn {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+      }
+
+      @keyframes vibrate {
+        0% { transform: rotate(0deg); }
+        10% { transform: rotate(-1deg); }
+        20% { transform: rotate(1deg); }
+        30% { transform: rotate(0deg); }
+        40% { transform: rotate(1deg); }
+        50% { transform: rotate(-1deg); }
+        60% { transform: rotate(0deg); }
+        70% { transform: rotate(-1deg); }
+        80% { transform: rotate(1deg); }
+        90% { transform: rotate(0deg); }
+        100% { transform: rotate(-1deg); }
+      }
+
+      vibrating {
+        animation: vibrate 0.1s infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const plants = ['🌽', '🌾', '🌻', '🍄']
+      const randomPlant = () => {
+        return plants[Math.floor(Math.random() * plants.length)];
+      }
+      for (let x = 0; x < 10; x++) {
+        for (let y = 0; y < 10; y++) {
+          const farm = document.createElement('button');
+          farm.classList.add('full')
+          farm.style.display = 'inline-block';
+          farm.style.position = 'relative'
+          farm.style.fontSize = '2em';
+          farm.style.width = '2em';
+          farm.style.height = '2em';
+          farm.style.cursor = 'pointer';
+          farm.id = `${x}-${y}`;
+          farm.innerHTML = randomPlant() ;
+          // on hover
+          farm.onmouseover = () => {
+            const farm = document.getElementById(`${x}-${y}`);
+            if (!farm.classList.contains('full')) {
+              return
+            }
+            const oldPlant = farm.innerHTML
+            const popcorn = document.createElement('div');
+            popcorn.innerHTML = oldPlant;
+            if (oldPlant == '🌽') {
+              popcorn.innerHTML = '🍿';
+            }
+            popcorn.style.position = 'absolute';
+            popcorn.style.top = `0em`;
+            popcorn.style.left = `0em`;
+            popcorn.style.pointerEvents = 'none';
+            popcorn.style.fontSize = '2em';
+            popcorn.style.zIndex = 2;
+            popcorn.style.animation = 'popcorn 0.5s forwards';
+            farm.innerHTML = '🌱';
+            farm.appendChild(popcorn);
+            const audio = new Audio('pop.mp3');
+            audio.play();
+            farm.classList.remove('full');
+            // check if all farms are popped
+            if (document.querySelector('.full') === null) {
+              setTimeout(() => {
+                const ding = new Audio('ding.mp3');
+                ding.play();
+              }, 100);
+            }
+          };
+          document.body.appendChild(farm);
+        }
+        document.body.appendChild(document.createElement('br'));
+      }
+    </script>
+  </body>
+</html>
