@@ -71,3 +71,26 @@ function formatNumber(num) {
 function pluralize(count, word) {
   return count === 1 ? word : word + 's'
 }
+
+// avg count per second
+let avgCpsCount = 0
+let previousCount = 0
+cpsSamples = []
+
+setInterval(() => {
+  const countDiff = count - previousCount
+  if (countDiff >= 0) {
+    cpsSamples.push(countDiff)
+    if (cpsSamples.length > 8) {
+      cpsSamples.shift()
+    }
+    const sum = cpsSamples.reduce((a, b) => a + b, 0)
+    avgCpsCount = (sum / cpsSamples.length) * 4
+
+    avg.innerHTML = formatNumber(Math.round(avgCpsCount)) + " " + pluralize(avgCpsCount, "click") + " per second"
+    avg.classList.remove('hidden')
+  }
+
+  previousCount = count
+
+}, 250)
